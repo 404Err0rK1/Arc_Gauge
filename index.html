@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Arc Gauge</title>
+</head>
+<body>
+    <div id="gauge">
+        <div id="major-ticks">
+            <span>10℃</span>
+            <span>20℃</span>
+            <span>30℃</span>
+        </div>
+        <div id="minor-ticks">
+            <span title="--i:1"></span>
+            <span title="--i:2"></span>
+            <span title="--i:3"></span>
+            <span title="--i:4"></span>
+            <span title="--i:5"></span>
+            <span title="--i:6"></span>
+            <span title="--i:7"></span>
+            <span title="--i:8"></span>
+            <span title="--i:9"></span>
+            <span title="--i:10"></span>
+            <span title="--i:11"></span>
+            <span title="--i:12"></span>
+            <span title="--i:13"></span>
+            <span title="--i:14"></span>
+            <span title="--i:15"></span>
+            <span title="--i:16"></span>
+            <span title="--i:17"></span>
+            <span title="--i:18"></span>
+            <span title="--i:19"></span>
+            <span title="--i:20"></span>
+        </div>
+        <div id="minor-ticks-bottom-mask"></div>
+        <div id="bottom-circle"></div>
+        <svg version="1.1" baseProfile="full" width="190" height="190" xmlns="http://www.w3.org/2000/svg">
+            <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#b96e85"/>
+                <stop offset="100%" stop-color="#ae69bb"/>
+            </linearGradient>
+            <path d="M5 95 A80 80 0 0 1 185 95" stroke=url(#gradient) fill="none" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="0 282.78"/>
+        </svg>
+        <div id="center-circle">
+            <span id="name">HEATING</span>
+            <span id="temperature">10</span>
+            <img src="leaf.svg" alt="">
+        </div>
+        <input type="range" id="range" max="30" min="10" value="10">
+    </div>
+    <script>
+        const arc = document.querySelector("svg path");
+        const temperature = document.querySelector("#temperature");
+        const range = document.querySelector("#range");
+        range.addEventListener('change', (e) => {
+            temperature.textContent = e.target.value;
+
+            const arc_length = arc.getTotalLength();
+            const step = arc_length / (range.max - range.min);
+            const value = (e.target.value - range.min) * step;
+            arc.style.strokeDasharray = `${value} ${arc_length - value}`;
+        })
+    </script>
+</body>
+</html>
